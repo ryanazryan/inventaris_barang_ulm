@@ -19,8 +19,11 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'username', // Tambahkan username di sini
         'email',
         'password',
+        'role_id',
+        'ruangan_id'
     ];
 
     /**
@@ -44,5 +47,25 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function ruangan()
+    {
+        return $this->belongsTo(Ruangan::class);
+    }
+    
+    public function lantai()
+    {
+        return $this->ruangan ? $this->ruangan->lantai : null;
+    }
+    
+    public function gedung()
+    {
+        return $this->lantai() ? $this->lantai()->gedung : null;
     }
 }
